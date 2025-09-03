@@ -1,7 +1,8 @@
 📊 Streamlit Data App Monorepo
 
-Python を始めたばかりの人でも楽しく学べる データ可視化アプリ です。
+Python を始めたばかりの人でも楽しく学べる **強化版** データ可視化アプリ です。
 Streamlit を使い、CSVファイルをアップロードすると表やグラフが表示されます。
+**新機能**: 複数グラフタイプ、サイドバー設定、ダウンロード機能、美しいUIデザイン
 
 🚀 使用技術
 
@@ -10,6 +11,8 @@ Python 3.10+
 Streamlit → Webアプリフレームワーク
 
 pandas → CSVやデータ解析
+
+numpy → 数値処理
 
 TailwindCSS（必要なら） → 見た目の調整
 
@@ -20,12 +23,12 @@ streamlit-data-app/
 ├── README.md
 ├── apps/
 │   └── csv_viewer/
-│       ├── app.py
-│       ├── requirements.txt
-│       └── sample.csv
+│       ├── app.py          # メインアプリ（強化版UI）
+│       ├── requirements.txt # 依存関係
+│       └── sample.csv      # サンプルデータ
 ├── frontend/          # 見た目拡張用（任意）
 └── docs/
-    └── guide.md
+    └── guide.md       # 詳細ガイド
 
 
 👉 最初は apps/csv_viewer/app.py だけ触ればOKです。
@@ -49,42 +52,43 @@ streamlit run app.py
 
 ブラウザが開いてアプリが動きます。
 
-📖 サンプルアプリの使い方
+📖 強化版アプリの使い方
 
-CSVをアップロードすると表で表示
+✅ **ファイルアップロード**
+- CSVファイルをアップロード
+- 「サンプルデータを使用」ボタンでテスト可能
 
-数値カラムを選ぶと グラフ表示
+✅ **データ概要**
+- データの行数・列数・データ型数を確認
+- 最初の10行をプレビュー表示
 
-describe() で 統計情報（平均・最大・最小）を確認
+✅ **統計情報**
+- pandas describe() で基本統計量を表示
+- 平均・中央値・標準偏差などの詳細
+
+✅ **ビジュアライゼーション**
+- **グラフタイプ選択**: 折れ線グラフ・棒グラフ・面グラフ
+- **カラム選択**: 数値カラムのみ表示可能
+- **追加インサイト**: 選択カラムの平均・中央値・標準偏差
+
+✅ **ダウンロード機能**
+- 処理済みデータをCSVとしてダウンロード
+
+🎨 **UI特徴**
+- モダンなデザインとカラースキーム
+- サイドバー設定パネル
+- レスポンシブレイアウト
+- インタラクティブなボタンとホバー効果
 
 ✅ requirements.txt
 streamlit
 pandas
+numpy
 
-📝 サンプルコード（apps/csv_viewer/app.py）
-import streamlit as st
-import pandas as pd
-
-st.title("📊 CSV可視化アプリ")
-
-# ファイルアップロード
-uploaded_file = st.file_uploader("CSVファイルをアップロードしてください", type="csv")
-
-if uploaded_file:
-    # データ読み込み
-    df = pd.read_csv(uploaded_file)
-
-    st.subheader("データプレビュー")
-    st.dataframe(df.head())
-
-    st.subheader("統計情報")
-    st.write(df.describe())
-
-    st.subheader("グラフ表示")
-    column = st.selectbox("カラムを選択してください", df.columns)
-    if pd.api.types.is_numeric_dtype(df[column]):
-        st.line_chart(df[column])
-    else:
-        st.warning("数値カラムを選んでください")
-else:
-    st.info("サンプルCSVを使うときは `sample.csv` をアップロードしてみましょう！")
+📝 アプリの特徴（apps/csv_viewer/app.py）
+- カスタムCSSによる美しいUI
+- サイドバー設定（グラフタイプ選択など）
+- 複数カラムレイアウト
+- メトリクス表示
+- データダウンロード機能
+- エラーハンドリングの改善
